@@ -1,69 +1,40 @@
 # vertex-net-http-mesh
 
-`vertex-net-http-mesh` treats networking as a local verification problem. The TypeScript implementation is intentionally narrow, but the fixtures and notes make the behavior explicit.
+`vertex-net-http-mesh` explores networking with a small TypeScript codebase and local fixtures. The technical goal is to design a TypeScript verification harness for http systems, covering incremental indexing, append-only fixtures, and failure-oriented tests.
 
-## Vertex Net HTTP Mesh Checkpoints
+## Use Case
 
-Treat the compact fixture as the contract and the extended examples as a scratchpad. The code should stay boring enough that a change in behavior is obvious from the test output.
+I want this repository to be useful as a quick reading exercise: fixtures first, implementation second, verifier last.
 
-## Useful Pieces
+## Vertex Net HTTP Mesh Review Notes
 
-- Includes extended examples for retry behavior, including `surge` and `degraded`.
-- Documents policy decisions tradeoffs in `docs/operations.md`.
-- Runs locally with a single verification command and no external credentials.
-- Stores project constants and verification metadata in `metadata/project.json`.
-- Adds a repository audit script that checks structure before running the language verifier.
+`stress` and `edge` are the cases worth reading first. They show the optimistic and cautious ends of the fixture.
 
-## What This Is For
+## Highlights
 
-This is not a wrapper around a service. It is a self-contained project that shows how the model behaves when demand, capacity, latency, risk, and weight move in different directions.
+- `fixtures/domain_review.csv` adds cases for packet span and retry pressure.
+- `metadata/domain-review.json` records the same cases in structured form.
+- `config/review-profile.json` captures the read order and the two review questions.
+- `examples/vertex-net-http-walkthrough.md` walks through the case spread.
+- The TypeScript code includes a review path for `retry pressure` and `route drift`.
+- `docs/field-notes.md` explains the strongest and weakest cases.
 
-## Project Layout
+## Code Layout
 
-- `src`: primary implementation
-- `tests`: verification harness
-- `fixtures`: compact golden scenarios
-- `examples`: expanded scenario set
-- `metadata`: project constants and verification metadata
-- `docs`: operations and extension notes
-- `scripts`: local verification and audit commands
-- `package.json`: Node package scripts
+The fixture data drives the tests. The code stays thin, while `metadata/domain-review.json` and `config/review-profile.json` explain what each case is meant to protect.
 
-## Architecture Notes
+The TypeScript implementation avoids hidden state so fixture changes are easy to reason about.
 
-The project is organized around a compact model rather than a large framework. Inputs are scored, classified, and checked against golden fixtures. The constants live in code and are mirrored in metadata so documentation drift is easy to catch. The TypeScript project keeps types close to the model and compiles before running its checks.
-
-## Local Workflow
+## Run The Check
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1
 ```
 
-This runs the language-level build or test path against the compact fixture set.
+## Regression Path
 
-## Case Study
+The check exercises the source code and the review fixture. `stress` is the high score at 216; `edge` is the low score at 151.
 
-The extended cases are not random smoke tests. `degraded` keeps pressure on the review path, while `surge` shows the model when capacity and weight are strong enough to clear the threshold.
+## Future Work
 
-## Quality Gate
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/audit.ps1
-```
-
-The audit command checks repository structure and README constraints before it delegates to the verifier.
-
-## Scope
-
-The repository favors determinism over breadth. It does not pull live data, keep secrets, or depend on network access for verification.
-
-## Expansion Ideas
-
-- Add malformed input fixtures so the failure path is as visible as the happy path.
-- Split the scoring constants into a typed configuration object and validate it before use.
-- Add a comparison mode that shows how decisions change when one signal is adjusted.
-- Add one more networking fixture that focuses on a malformed or borderline input.
-
-## Tooling
-
-Use a normal shell with TypeScript available on `PATH`. The verifier is written as a PowerShell script because the portfolio was assembled on Windows.
+The repository is intentionally scoped to local checks. I would expand it by adding adversarial fixtures before adding features.

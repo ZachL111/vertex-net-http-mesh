@@ -1,0 +1,73 @@
+{
+  "repo": "vertex-net-http-mesh",
+  "language": "TypeScript",
+  "category": "Networking",
+  "goal": "Design a TypeScript verification harness for http systems, covering incremental indexing, append-only fixtures, and failure-oriented tests.",
+  "review_model": {
+    "terms": [
+      "packet span",
+      "retry pressure",
+      "route drift",
+      "socket risk"
+    ],
+    "lanes": [
+      "ship",
+      "watch",
+      "hold"
+    ],
+    "score": "signal * 2 + slack + confidence - drag * 3",
+    "purpose": "surface the domain-specific cases that need the most careful review"
+  },
+  "cases": [
+    {
+      "name": "baseline",
+      "focus": "packet span",
+      "signal": 75,
+      "slack": 24,
+      "drag": 11,
+      "confidence": 64,
+      "score": 205,
+      "lane": "ship"
+    },
+    {
+      "name": "stress",
+      "focus": "retry pressure",
+      "signal": 78,
+      "slack": 39,
+      "drag": 22,
+      "confidence": 87,
+      "score": 216,
+      "lane": "ship"
+    },
+    {
+      "name": "edge",
+      "focus": "route drift",
+      "signal": 70,
+      "slack": 36,
+      "drag": 31,
+      "confidence": 68,
+      "score": 151,
+      "lane": "ship"
+    },
+    {
+      "name": "recovery",
+      "focus": "socket risk",
+      "signal": 87,
+      "slack": 31,
+      "drag": 14,
+      "confidence": 50,
+      "score": 213,
+      "lane": "ship"
+    },
+    {
+      "name": "stale",
+      "focus": "packet span",
+      "signal": 67,
+      "slack": 51,
+      "drag": 13,
+      "confidence": 58,
+      "score": 204,
+      "lane": "ship"
+    }
+  ]
+}
